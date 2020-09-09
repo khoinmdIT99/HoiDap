@@ -1,0 +1,92 @@
+﻿@using System.ComponentModel
+@using LibraryNF.Helper
+@model Discuss.Models.AskModel
+@{
+    ViewData["SeoPageTitle"] = Model.Content;
+    ViewData["SeoDescription"] = "";
+    ViewData["SeoKeywords"] = "";
+    ViewData["SeoImage"] = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/wwwroot/client-site/css/Index.css" rel="stylesheet" />
+<style>
+    .line {
+        border-top: 1px solid #dddfe2;
+    }
+</style>
+<script type="text/javascript">
+    function ShowAnswer(divIdAnswer, divIdBtn) {
+        $("#" + divIdBtn).addClass("d-none");
+        $("#" + divIdAnswer).removeClass("d-none");
+    }
+</script>
+<section class="main-highlight"></section>
+<section class="main-content">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="content-timeline">
+                <div class="ask-lists col-12">
+                    <div class="ask-body row">
+                        <div class="col-12">
+                            <div class="ask-avatar">
+                                <img src="~/images/avatar/avatar1.png" alt="user-avatar" class="avatar-ask">
+                            </div>
+                            <div>
+                                <div class="user-name">
+                                    <a href="javascript:void(0)">@TextHelper.CreateNickNameRandom()</a>
+                                </div>
+                                <div class="time">
+                                    @DateTimeHelper.GetTimeAgo(Model.DateCreated)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="left-info-ask">
+                                <div class="tick-check">
+                                    <spans><i class="fa fa-check"></i></spans>
+                                </div>
+                            </div>
+                            <div style="margin-left: 55px;">
+                                <div class="ask-content">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                                <div class="ask-tag">
+                                    <a href="javascript:void(0)" class="timeline-category-name">Hỏi đáp</a>
+                                    <a href="javascript:void(0)" class="timeline-category-name">@Model.CategoryName</a>
+                                </div>
+                                <div class="ask-action-info">
+                                    <span>
+                                        <i class="emotion-like">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span>@Model.CountLike lượt thích</span>
+                                    </span>
+                                    <span style="padding-left: 10px;">
+                                        <i class="fa fa-eye"></i><span>@Model.CountView lượt xem</span>
+                                    </span>
+                                    <span class="float-right">
+                                        <i class="emotion-comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span>@Model.CountAnswer  trả lời</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        @*Trả lời*@
+                        <div class="col-12 line d-none" id="divAnswer-@Model.AskId">
+                            @{Html.RenderAction("Index","Answer",new{askId=Model.AskId});}
+                        </div>
+                    </div>
+                </div>
+                <div class="load-more" id="load-more-@Model.AskId">
+                    <button class="load-more-button material-button" type="button" onclick="ShowAnswer('divAnswer-@Model.AskId','load-more-@Model.AskId')">
+                        <i style="padding-top: 5px;" class="fa fa-life-saver"></i>
+                        <span>Xem câu trả lời</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="content-sidebar">
+            <div class="sidebar_inner">
+                <div class="widget-item">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

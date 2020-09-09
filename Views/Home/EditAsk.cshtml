@@ -1,0 +1,72 @@
+﻿@model Discuss.Models.AskModel
+@{
+    ViewBag.Title = "Sửa câu hỏi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="main-content" id="Loading">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="col-12">
+                <div class="row" style="padding-top: 40px;padding-bottom: 10px">
+                    Chọn danh mục câu hỏi:
+                </div>
+                <div class="row">
+                    <select class="frm-input" id="cboCategory">
+                        @foreach (var category in Model.CategoryModels)
+                        {
+                            if (category.CategoryId == Model.CategoryId)
+                            {
+                                <option selected="selected" value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                            else
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="row" style="padding-top: 20px;padding-bottom: 10px">
+                    Nội dung câu hỏi:
+                </div>
+                <div class="row">
+                    <div id="txtDescription" style="width: 100%">@Html.Raw(Model.Content)</div>
+                </div>
+                <div class="row" style="padding-top: 20px;text-align: center;display: block;">
+                    <button type="button" class="frm-button material-button" onclick="UpdateAsk(@Model.AskId)">Cập nhật câu hỏi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtDescription').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol']],
+                ['view', ['fullscreen', 'codeview']]
+            ],
+            height: 400,
+            tabsize: 2
+        });
+    });
+
+    function UpdateAsk(askId) {
+        var objAjax = {
+            parameters: {
+                AskId: askId,
+                CategoryId: $("#cboCategory").val(),
+                Content: $("#txtDescription").summernote('code')
+            },
+            divLoading: "#Loading"
+        };
+        AjaxPostAsync("/Ask/Update", objAjax,
+            function (data) {
+                SwalNotifySuccess("Cập nhật câu hỏi thành công");
+                setTimeout(function () { window.location.href = "/cau-hoi/" + data.SlugUrl + "-" + data.AskId; }, 3000);
+            });
+    }
+</script>

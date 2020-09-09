@@ -1,0 +1,47 @@
+﻿@using LibraryNF.Helper
+@model List<Discuss.Models.AskModel>
+
+@*Bảng dữ liệu*@
+<table class="table table-striped table-bordered table-hover table-render-html gg-table table-chapter">
+    <thead>
+        <tr>
+            <th class="vertical-align-inherit width60px">ID</th>
+            <th class="vertical-align-inherit width100px">Danh mục</th>
+            <th class="vertical-align-inherit width100px">Người hỏi</th>
+            <th class="vertical-align-inherit">Nội dung câu hỏi</th>
+            <th class="vertical-align-inherit width100px">Thời gian</th>
+            <th class="vertical-align-inherit width180px">Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ask in Model)
+        {
+            <tr>
+                <td class="center">
+                    @ask.AskId
+                </td>
+                <td class="center">
+                    @ask.CategoryName
+                </td>
+                <td class="center">
+                    @ask.FullName
+                </td>
+                <td class="">
+                    @Html.Raw(ask.Content)
+                </td>
+                <td class="center">
+                    @ask.DateCreated.ConvertDateToString()
+                </td>
+                <td class="center">
+                    <a onclick="Update(@ask.UserId,@ask.AskId)">
+                        <div data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Sửa thông tin" class="gg-function-icon glyphicon glyphicon-pencil"></div>
+                    </a>
+                    <a onclick="DeleteAsk(@ask.AskId)">
+                        <div data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Xóa thông tin" class="gg-function-icon glyphicon glyphicon-trash"></div>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

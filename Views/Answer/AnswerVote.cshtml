@@ -1,0 +1,11 @@
+﻿@model Discuss.Models.AnswerModel
+@if (Model.IsVote)//Có Like
+{
+    <input type="hidden" value="1" id="IsVote" />
+    <a class="paddingright7px cursor-pointer voted" id="VoteAnswer-@Model.AnswerId" onclick="UnVoteAnswer(this,@Model.AnswerId,@Model.CountVote)"><i class="fa fa-heart heart-active"></i>Vote (<span id="CountVote-@Model.AnswerId">@Model.CountVote</span>)</a>
+}
+else//Không Vote
+{
+    <input type="hidden" value="0" id="IsVote" />
+    <a class="paddingright7px cursor-pointer" id="VoteAnswer-@Model.AnswerId" onclick="VoteAnswer(this,@Model.AnswerId,@Model.CountVote)"><i class="fa fa-heart-o heart-active"></i>Vote (<span id="CountVote-@Model.AnswerId">@Model.CountVote</span>)</a>
+}

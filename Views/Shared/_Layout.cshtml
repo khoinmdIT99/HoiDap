@@ -1,0 +1,139 @@
+﻿@using Discuss.Models
+@using LibraryNF.Helper
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Html.Raw(ViewData["SeoPageTitle"])</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="fb:app_id" content="340292929858310" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="@Html.Raw(ViewData["SeoDescription"])">
+    <meta name="keywords" content="@Html.Raw(ViewData["SeoKeywords"])">
+    <meta name="robots" content="index,follow" />
+    <link href="~/wwwroot/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/wwwroot/client-site/summernote/summernote.css" rel="stylesheet" />
+
+    <link href="~/wwwroot/lib/zebra_tooltips/dist/css/bubble/zebra_tooltips.min.css" rel="stylesheet" />
+    <link href="~/wwwroot/client-site/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/wwwroot/client-site/css/main-style.css" rel="stylesheet" />
+    <link href="~/wwwroot/client-site/css/responsive-style.css" rel="stylesheet" />
+    <link href="~/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/LibraryJS/Loading/jquery.loading.min.css" rel="stylesheet" />
+    <link href="~/LibraryJS/SweetAlert2/sweetalert2.min.css" rel="stylesheet" />
+    <script src="~/wwwroot/lib/jQuery/dist/jquery.min.js"></script>
+    <script src="~/wwwroot/client-site/js/jquery.timeago.js"></script>
+    <script src="~/LibraryJS/SweetAlert2/sweetalert2.all.min.js"></script>
+    <script src="~/LibraryJS/SweetAlert2/ShowAlert.js"></script>
+    <script src="~/LibraryJS/Loading/jquery.loading.min.js"></script>
+    <script src="~/LibraryJS/Ajax/AjaxAPI.js"></script>
+    <script src="~/wwwroot/lib/bootstrap/bootstrap.js"></script>
+    <script src="~/wwwroot/client-site/summernote/summernote.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-wrapper">
+            <div class="toggle-sidebar material-button">
+                <i class="fa fa-navicon" style="font-size:24px"></i>
+            </div>
+            <div class="logo-box">
+                <a href="/">
+                    <h1>
+                        Hỏi đáp 247
+                    </h1>
+                </a>
+            </div>
+            <div class="header-menu">
+                <ul class="header-navigation" data-show-menu-on-mobile="">
+                    @{
+                        DBM.GetList("sp_Category_GetAll", new { }, out List<CategoryModel> categoryModels);
+                        foreach (var cat in categoryModels)
+                        {
+                            <li>
+                                <a class="material-button submenu-toggle" href="@cat.Alias">@cat.CategoryName</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="header-right with-seperator">
+                <ul class="header-navigation">
+                    @if (Request.Cookies["UserLogin"] != null)
+                    {
+                        <li>
+                            <a href="javascript:void(0)" class="material-button submenu-toggle"><i class="fa fa-user"></i> <span class="hide-on-tablet">@Request.Cookies["UserLogin"]["UserName"]</span></a>
+                            <div class="header-submenu" style="display: block;">
+                                <ul>
+                                    <li><a href="javascript:void(0)" class="font-weight-bold">@Request.Cookies["UserLogin"]["FullName"]</a></li>
+                                    <li>
+                                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+                                            <a href="javascript:void(0)" class="font-weight-bold" onclick="SetCookie('UserLogin', '', -1);location.reload();"><span>Đăng xuất</span></a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="/User/Login" class="material-button submenu-toggle">Đăng nhập</a>
+                        </li>
+                    }
+                    <li>
+                        <a href="javascript:void(0)" class="material-button search-toggle"><i class="fa fa-search"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="search-bar">
+                <form class="search-form">
+                    <div class="search-input-wrapper">
+                        <input type="text" name="qq" placeholder="Tìm kiếm..." maxlength="30" class="search-input" id="txtSearch">
+                        <button type="button" name="search" class="search-submit" onclick="SearchAsk()"><i class="fa fa-arrow-right"></i></button>
+                    </div>
+                    <span class="search-close search-toggle">
+                        <i class="fa fa-close"></i>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <div class="sidebar-wrapper">
+            <div class="sidebar-logo">
+                <div class="float-left" style="margin: 0; padding: 0; display: inline-block; font-weight: bold; padding: 14px; font-size: 20px;">
+                    Hỏi đáp 247
+                </div>
+                <div class="sidebar-toggle-button">
+                    <i class="fa fa-arrows-h" style="font-size: 24px"></i>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                @{
+                    foreach (var cat in categoryModels)
+                    {
+                        <li>
+                            <a href="/@cat.Alias" class="material-button">
+                                <span class="menu-icon"><i class="fa fa-balance-scale"></i></span>
+                                <span class="menu-label">@cat.CategoryName</span>
+                            </a>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+    <main class="main-container">
+        @RenderBody()
+    </main>
+    <div class="overlay" style="display: none;"></div>
+    <script src="~/wwwroot/lib/zebra_tooltips/dist/zebra_tooltips.min.js"></script>
+    <script src="~/wwwroot/client-site/js/main-script.js"></script>
+    <script src="~/wwwroot/client-site/js/owl.carousel.min.js"></script>
+    <script src="~/wwwroot/client-site/js/jquery.twbsPagination.min.js"></script>
+    <script type="text/javascript">
+        function SearchAsk() {
+            window.location.href = "/search/" + $("#txtSearch").val();
+        }
+    </script>
+</body>
+</html>

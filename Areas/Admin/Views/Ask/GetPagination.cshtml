@@ -1,0 +1,28 @@
+﻿@*Trả ra bảng dữ liệu*@
+<div id="table-body">
+</div>
+@*Phân trang*@
+<div class="gg-table-footer">
+    <div class="gg-table-info">Tổng số @Model.TotalRow kết quả trong @Model.TotalPages trang</div>
+    <div class="gg-pagination-main">
+        <div class="gg-pagination-main-left">
+            <ul id="gg-pagination-footer" class="pagination-sm gg-pagination pagination"></ul>
+        </div>
+        <div class="gg-pagination-main-right">
+            Số kết quả trên trang
+            <select id="pagesize-gg" class="gg-pagesize" onchange="LoadDataAsk(this.value)">
+                @Html.Raw(LibraryNF.Helper.TextHelper.ToStringPageSize(Model.PageSize));
+            </select>
+        </div>
+    </div>
+</div>
+@*Code Javascript để trả ra bảng dữ liệu*@
+<script type="text/javascript">
+    var objValue = {//Giá trị của dữ liệu lọc
+        categoryId: $("#CategoryID").val(),
+        pageSize: $("#pagesize-gg").val(), //Bao nhiêu kết quả trên trang
+        page: ""//Trang thứ mấy
+    };
+    //Code trả ra bảng dữ liệu
+    PaginationPageAdmin(@Model.TotalPages, "/Admin/Ask/GetTable", objValue);
+</script>

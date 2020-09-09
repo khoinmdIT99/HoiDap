@@ -1,0 +1,65 @@
+{
+  "_from": "zebra_tooltips@2.0.5",
+  "_id": "zebra_tooltips@2.0.5",
+  "_inBundle": false,
+  "_integrity": "sha512-LTEHXHVc+i97dB7DEMW5/3048Qb5gSKjAY+HWr0pHi5Q+La618Ygb5lxcsaLP0AT9PUgaBv7u+smMifS+wMLjA==",
+  "_location": "/zebra_tooltips",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "zebra_tooltips@2.0.5",
+    "name": "zebra_tooltips",
+    "escapedName": "zebra_tooltips",
+    "rawSpec": "2.0.5",
+    "saveSpec": null,
+    "fetchSpec": "2.0.5"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/zebra_tooltips/-/zebra_tooltips-2.0.5.tgz",
+  "_shasum": "658c6a89b8b53c6198a130d444ed08c28b79818b",
+  "_spec": "zebra_tooltips@2.0.5",
+  "_where": "M:\\AskAnswer\\AskAnswer.Web",
+  "author": {
+    "name": "Stefan Gabos",
+    "email": "contact@stefangabos.ro"
+  },
+  "bugs": {
+    "url": "https://github.com/stefangabos/Zebra_Tooltips/issues",
+    "email": "contact@stefangabos.ro"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "A lightweight and highly configurable jQuery tooltips plugin",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-eslint": "*",
+    "grunt-newer": "*",
+    "grunt-notify": "*",
+    "grunt-sass": "*",
+    "node-sass": "*",
+    "time-grunt": "*"
+  },
+  "homepage": "https://github.com/stefangabos/Zebra_Tooltips/",
+  "keywords": [
+    "tooltip",
+    "tooltips",
+    "jquery"
+  ],
+  "license": "LGPL-3.0",
+  "main": "dist/zebra_tooltips.min.js",
+  "name": "zebra_tooltips",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefangabos/Zebra_Tooltips.git"
+  },
+  "version": "2.0.5"
+}

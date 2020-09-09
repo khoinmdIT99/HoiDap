@@ -1,0 +1,11 @@
+﻿@model Discuss.Models.AskModel
+@if (Model.IsLike)//Có Like
+{
+    <input type="hidden" value="1" id="IsLike" />
+    <a id="btnLikeAsk-@Model.AskId" class="liked" style="vertical-align: -webkit-baseline-middle;" onclick="DisLikeAsk(this, @Model.AskId, @Model.CountLike)"><i class="fa fa-thumbs-up"></i>Đã thích</a>
+}
+else//Không Like
+{
+    <input type="hidden" value="0" id="IsLike" />
+    <a id="btnLikeAsk-@Model.AskId" style="vertical-align: -webkit-baseline-middle;" onclick="LikeAsk(this, @Model.AskId, @Model.CountLike)"><i class="fa fa-thumbs-o-up"></i>Thích</a>
+}

@@ -1,0 +1,67 @@
+﻿@*Câu lệnh để đón Model từ Controller*@
+@model List<Discuss.Models.CategoryModel>
+
+
+@{
+    ViewBag.Title = "CreateAsk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="main-content" id="Loading">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="col-12">
+                <div class="row" style="padding-top: 40px;padding-bottom: 10px">
+                    Chọn danh mục câu hỏi:
+                </div>
+                <div class="row">
+                    <select class="frm-input" id="cboCategory">
+                        @foreach (var category in Model)
+                        {
+                            <option value="@category.CategoryId">@category.CategoryName</option>
+                        }
+                    </select>
+                </div>
+                <div class="row" style="padding-top: 20px;padding-bottom: 10px">
+                    Nội dung câu hỏi:
+                </div>
+                <div class="row">
+                    <div id="txtDescription" style="width: 100%"></div>
+                </div>
+                <div class="row" style="padding-top: 20px;text-align: center;display: block;">
+                    <button type="button" class="frm-button material-button" onclick="SendAsk()">Gửi câu hỏi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtDescription').summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol']],
+                ['view', ['fullscreen', 'codeview']]
+            ],
+            height: 400,
+            tabsize: 2
+        });
+    });
+
+    function SendAsk() {
+        var objAjax = {
+            parameters: {
+                CategoryId: $("#cboCategory").val(),
+                Content: $("#txtDescription").summernote('code')
+            },
+            divLoading: "#Loading"
+        };
+        AjaxPostAsync("/Ask/Add", objAjax,
+            function (data) {
+                SwalNotifySuccess("Thêm mới câu hỏi thành công");
+                setTimeout(function(){ window.location.href="/cau-hoi/"+data.SlugUrl+"-"+data.AskId; }, 3000);
+            });
+    }
+</script>

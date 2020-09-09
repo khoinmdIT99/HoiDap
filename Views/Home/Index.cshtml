@@ -1,0 +1,109 @@
+﻿@using System.ComponentModel
+@using LibraryNF.Helper
+@model  Discuss.Models.PaginationObject<List<Discuss.Models.AskModel>>
+@{
+    ViewData["SeoPageTitle"] = "Hệ thống Hỏi đáp 24/7";
+    ViewData["SeoDescription"] = "Cộng đồng Hỏi đáp 247 hỗ trợ giải đáp nhanh chóng các câu hỏi về lý thuyết, bài tập, trắc nghiệm trong SGK";
+    ViewData["SeoKeywords"] = "hoidap247, học miễn phí, học hỏi cộng đồng, hỏi đáp, sgk, bài tập, trắc nghiệm, cơ bản, nâng cao, Toán Học, Lớp 12";
+    ViewData["SeoImage"] = "/client-site/images/6-news-img.jpg";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/wwwroot/client-site/css/Index.css" rel="stylesheet" />
+<section class="main-content" style="padding-top: 28px;">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="content-timeline" style="text-align: right">
+                <button type="button" class="frm-button material-button" onclick="window.location.href='/dat-cau-hoi'">Thêm câu hỏi</button>
+            </div>
+        </div>
+        <div class="content-sidebar">
+            <div class="sidebar_inner">
+                <div class="widget-item">
+                    @*@await Component.InvokeAsync("AskSame", new GradeSubjectViewModel { SubjectId = 0, GradeId = 0 })*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="main-content">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="content-timeline">
+                <div class="ask-lists col-12" id="AskContent">
+                    @if (Model.ObjectFilter == null)
+                    {
+                        <p>
+                            Không có câu hỏi nào
+                        </p>
+                    }
+                    else
+                    {
+                        foreach (var ask in Model.ObjectFilter)
+                        {
+                            var linkDetail = $"cau-hoi/{ask.SlugUrl}-{ask.AskId}";
+                            <div class="ask-body row">
+                                <div class="col-12">
+                                    <div class="ask-avatar">
+                                        <img src="https://hoidap247.org/images/avatar/avatar1.png" alt="user-avatar" class="avatar-ask">
+                                    </div>
+                                    <div>
+                                        <div class="user-name">
+                                            <a href="javascript:void(0)">@ask.FullName</a>
+                                        </div>
+                                        <div class="time">
+                                            @DateTimeHelper.GetTimeAgo(ask.DateCreated)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="left-info-ask">
+                                        <div class="tick-check">
+                                            <spans><i class="fa fa-check"></i></spans>
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: 55px;">
+                                        <div class="ask-content">
+                                            <a href="/@linkDetail">
+                                                @Html.Raw(ask.Content)
+                                            </a>
+                                        </div>
+                                        <div class="ask-tag">
+                                            <a href="javascript:void(0)" class="timeline-category-name">Hỏi đáp</a>
+                                            <a href="javascript:void(0)" class="timeline-category-name">@Html.Raw(ask.CategoryName)</a>
+                                        </div>
+                                        <div class="ask-action-info  ">
+                                            <span>
+                                                <i class="emotion-like">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span>@ask.CountLike thích</span>
+                                            </span>
+                                            <span style="padding-left: 10px;">
+                                                <i class="emotion-comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span>@ask.CountAnswer trả lời</span>
+                                            </span>
+                                            <span style="padding-left: 10px;">
+                                                <i class="fa fa-eye"></i><span>@ask.CountView xem</span>
+                                            </span>
+                                            <span class="float-right">
+                                                <a href="/@linkDetail" class="btn-view-answer">
+                                                    Xem câu trả lời
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="col-12 col-md-12 col-xs-12">
+                    @{Html.RenderAction("Pager", "Home", new { paginationObject = Model });}
+                </div>
+            </div>
+        </div>
+        <div class="content-sidebar">
+            <div class="sidebar_inner">
+                <div class="widget-item">
+                    @*@await Component.InvokeAsync("AskSame", new GradeSubjectViewModel { SubjectId = 0, GradeId = 0 })*@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

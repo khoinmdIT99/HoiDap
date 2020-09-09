@@ -1,0 +1,59 @@
+﻿@using System.Text.RegularExpressions
+@model Discuss.Models.PaginationObject<List<Discuss.Models.AskModel>>
+@{
+    var urlTemplate = Context.Request.Path.ToString();
+    if (!urlTemplate.Contains("trang-"))
+    {
+        urlTemplate += "/trang-0";
+    }
+    foreach (var key in Context.Request.QueryString)
+    {
+        urlTemplate += "?" + key + "=" + Context.Request.QueryString[key.ToString()];
+    }
+    while (urlTemplate.Contains("//"))
+    {
+        urlTemplate = urlTemplate.Replace("//", "/");
+    }
+}
+<nav class="center">
+    @if (Model.TotalPages > 1)
+    {
+        <ul class="pagination">
+            @if (Model.Page == Model.FirstRowOnPage)
+            {
+                <li class="page-item disabled">
+                    <span class="page-link"><i class="fa fa-angle-left"></i></span>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a href="@Regex.Replace(urlTemplate,@"trang-\d+","trang-1")"><i class="fa fa-angle-left"></i></a>
+                </li>
+            }
+            @for (var i = Model.FirstRowOnPage; i <= Model.LastRowOnPage; i++)
+            {
+                if (i == Model.Page)
+                {
+                    <li class="active"><a href="javascript:void(0)"><span>@i</span></a></li>
+                }
+                else
+                {
+                    <li><a href="@Regex.Replace(urlTemplate,@"trang-\d+","trang-"+i)">@i</a></li>
+                }
+            }
+            @if (Model.Page == Model.LastRowOnPage)
+            {
+                <li class="page-item">
+                    <a href="@Regex.Replace(urlTemplate,@"trang-\d+","trang-"+Model.TotalPages)"><i class="fa fa-angle-right"></i></a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a href="@Regex.Replace(urlTemplate,@"trang-\d+","trang-"+Model.TotalPages)"><i class="fa fa-angle-right"></i></a>
+                </li>
+            }
+        </ul>
+    }
+</nav>

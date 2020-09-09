@@ -1,0 +1,100 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Trang quản trị hệ thống Hỏi đáp trực tuyến" />
+    <meta name="author" content="Hieu Bui" />
+    <link href="~/Areas/Admin/Assets/admin.css" rel="stylesheet" />
+    <link href="~/wwwroot/client-site/summernote/summernote.css" rel="stylesheet" />
+    <script src="~/Areas/Admin/Assets/jquery-2.2.3.min.js"></script>
+    <script src="~/Areas/Admin/Assets/jquery-ui.min.js"></script>
+    <script src="~/Areas/Admin/Assets/AdminSite.js"></script>
+    <script type="text/javascript">
+        var objAjax = {
+            parameters: undefined,
+            isFuntConfirm: false,
+            isPageAdmin: true,
+            divLoading: undefined
+        }
+        function LoadSkill() {
+            $(".gg-ce").CE({ maxHeight: 40 });
+            $(".CE").CE({ maxHeight: 34, lineheight: '17px' });
+            $('[data-toggle="tooltip"]').tooltip({ html: true });
+            $('[data-toggle="popover"]').popover({ html: true });
+        }
+
+/**/</script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="/" class="logo">
+                <span class="logo-lg"><b>Hỏi đáp</b> 247</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <a href="javascript:void(0)" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu" style="padding-top: 10px; padding-right: 10px;">
+                    <button type="button" class="btn btn-danger float-right" onclick="Logout()">Đăng xuất</button>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar">
+                <ul class="sidebar-menu">
+                    <li class="header">Trang quản trị</li>
+                    <li>
+                        <a href="/Admin/User/Index"><i class="glyphicon glyphicon-user"></i>Thành viên</a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Category/Index"><i class="glyphicon glyphicon-stats"></i>Danh mục</a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Ask/Admin"><i class="glyphicon glyphicon-stats"></i>Câu hỏi</a>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1> @ViewBag.Title </h1>
+            </section>
+            <section class="content">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2018-2019.</strong>
+        </footer>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script type="text/javascript">
+        var url = window.location.href;
+        $("ul.treeview-menu li a").filter(function () {
+            return this.href === url;
+        }).parent().parent().parent().addClass("active");
+        $("ul.treeview-menu li a").filter(function () {
+            return this.href === url;
+        }).parent().parent().addClass("menu-open");
+        $("ul.treeview-menu li a").filter(function () {
+            return this.href === url;
+        }).parent().addClass("active");
+    </script>
+    <script src="~/Areas/Admin/Assets/admin.js"></script>
+    <script src="~/wwwroot/client-site/summernote/summernote.js"></script>
+    <script type="text/javascript">
+        function Logout() {
+            setCookie("UserLogin", "", 0);
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html>

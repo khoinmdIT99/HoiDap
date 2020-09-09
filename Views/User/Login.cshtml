@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+    <title>Đăng nhập hệ thống</title>
+    <link href="/Assets/Login/css/font-face.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+    <link href="/Assets/Login/css/theme.css" rel="stylesheet" media="all">
+    <link href="~/LibraryJS/SweetAlert2/sweetalert2.min.css" rel="stylesheet" />
+</head>
+<body class="animsition">
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <div class="container">
+                <div class="login-wrap">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href="/">
+                                Đăng nhập hệ thống
+                            </a>
+                        </div>
+                        <div class="login-form">
+                            <form action="" method="post">
+                                <div class="form-group">
+                                    <label>UserName</label>
+                                    <input class="au-input au-input--full" type="text" id="txtUserName" placeholder="UserName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mật khẩu</label>
+                                    <input class="au-input au-input--full" type="password" id="txtPassword" placeholder="Mật khẩu">
+                                </div>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="button" onclick="Login()">Đăng nhập</button>
+                            </form>
+                            <div class="register-link">
+                                <p>
+                                    Nếu bạn chưa có tài khoản?
+                                    <a href="/User/Register">Đăng ký ngay</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/Assets/Login/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/Assets/Login/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="/Assets/Login/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <script src="/Assets/Login/vendor/wow/wow.min.js"></script>
+    <script src="/Assets/Login/vendor/animsition/animsition.min.js"></script>
+    <script src="/Assets/Login/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="/Assets/Login/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="/Assets/Login/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="/Assets/Login/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="/Assets/Login/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="~/LibraryJS/SweetAlert2/sweetalert2.all.min.js"></script>
+    <script src="~/LibraryJS/SweetAlert2/ShowAlert.js"></script>
+    <script src="/Assets/Login/js/main.js"></script>
+    <script type="text/javascript">
+        function Login() {
+            //Chỗ viết code xử lý khi bấm nút đăng nhập
+            $.ajax({
+                type: 'GET',//GET - POST - PUT - DELETE
+                url: "/User/CheckLogin?userName=" + $("#txtUserName").val() + "&password=" + $("#txtPassword").val(), //Đường dẫn
+                contentType: 'application/json; charset=utf-8',//Định nghĩa
+                data: "",//Chuyển sang JSON
+                dataType: "json",
+                async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                success: function (data) {
+                    //Sau khi Đăng nhập thành công
+                    window.location.href = "/";
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert("Tên tài khoản hoặc mật khẩu không đúng");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

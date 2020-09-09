@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "Quản lý Thành viên";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@*Code mẫu*@
+@*Code HTML (Bộ lọc - Bảng dữ liệu - Phân trang - Nút thêm mới)*@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box form-horizontal">
+            @*Nút thêm mới*@
+            <div class="box-header">
+                <label class="control-label col-sm-1" for="UserName">Tên đăng nhập:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="UserName" onchange="LoadDataUser()" />
+                </div>
+            </div>
+            @*Bảng dữ liệu - Phân trang*@
+            <div class="box-body">
+                <div id="table-content">
+                    @*Chứa HTML dạng bảng*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Teamplace HTML Thêm mới/Sửa*@
+<div id="InsertOrUpdate" class="form-horizontal display-none">
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="txtUserNameIOU">Tên đăng nhập <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập Tên đăng nhập" id="txtUserNameIOU" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="txtFullNameIOU">Tên đầy đủ <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập Tên đầy đủ" id="txtFullNameIOU" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="txtPhoneIOU">Số điện thoại <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập Số điện thoại" id="txtPhoneIOU" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="txtEmailIOU">Email <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập Email" id="txtEmailIOU" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="cboRoleIOU">Quyền <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="cboRoleIOU">
+                <option value="1" selected="selected">Quản trị viên</option>
+                <option value="2">Người dùng</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //Hàm ở đây được chạy đầu tiên khi load trang
+        LoadDataUser();
+    });
+    function LoadDataUser(pageSize) {//Số bản ghi của 1 trang
+        if (pageSize == undefined) pageSize = 10;//Nếu không chọn thì mặc định
+        window.objAjax.divLoading = "all";//loadding
+        var url = CreateURL("/Admin/User/GetPagination", //{Controller}/{Action}
+            {
+                pageSize: pageSize,
+                userName: $("#UserName").val() //Tham số bộ lọc
+            });
+        AjaxLoadPartial(url, window.objAjax,
+            function (html) {//html chính là bảng dữ liệu và phân trang
+                //Dữ liệu trả về OK
+                $("#table-content").html(html);
+                LoadSkill();
+            });
+    }
+    function Update(userId) {
+        //Bước 0: Gán Id cho nút (View: GetTable)
+        //Bước 1: Lấy dữ liệu từ CSDL theo userId gán cho form InsertOrUpdate
+        $.ajax({
+            type: 'GET',//GET - POST - PUT - DELETE
+            url: "/Admin/User/GetById?userId=" + userId, //Đường dẫn
+            contentType: 'application/json; charset=utf-8',//Định nghĩa
+            data: "",//Chuyển sang JSON
+            dataType: "json",
+            async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+            success: function (data) {
+                //Gán dữ liệu cho form
+                $("#txtUserNameIOU").val(data.UserName);
+                $("#txtFullNameIOU").val(data.FullName);
+                $("#txtPhoneIOU").val(data.Phone);
+                $("#txtEmailIOU").val(data.Email);
+                $("#cboRoleIOU").val(data.RoleId);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                console.log(message);
+            }
+        });
+        //Bước 2: Hiển thị form InsertOrUpdate trên dialog
+        ShowDialogInsertOrUpdate("InsertOrUpdate",
+            function (thisID) {
+                //Chỗ viết code xử lý khi bấm nút cập nhật
+                $.ajax({
+                    type: 'PUT',//GET - POST - PUT - DELETE
+                    url: "/Admin/User/Update", //Đường dẫn
+                    contentType: 'application/json; charset=utf-8',//Định nghĩa
+                    data: JSON.stringify({
+                        UserId: userId,
+                        UserName: $("#txtUserNameIOU").val(),
+                        FullName: $("#txtFullNameIOU").val(),
+                        Phone: $("#txtPhoneIOU").val(),
+                        Email: $("#txtEmailIOU").val(),
+                        RoleId: $("#cboRoleIOU").val()
+                    }),//Chuyển sang JSON
+                    dataType: "json",
+                    async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                    success: function (data) {
+                        if (data === "") { //Không bị trùng UserName
+                            //Sau khi Insert thành công thì thực hiện đóng Dialog
+                            $(thisID).dialog("close");
+                            //Load lại dữ liệu bảng
+                            LoadDataUser();
+                        } else { //Bị trùng UserName <= Hiển thị thông báo cho người dùng
+                            ShowMessage(data);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                        console.log(message);
+                    }
+                });
+            }, 800);
+    }
+    function DeleteUser(userId) {
+        //Bước 0: Gán Id cho nút (View: GetTable)
+        //Bước 1: Thông báo có muốn xóa hay không?
+        CoreConfirm("Đồng chí có chắc chắn muốn xóa <b>thành viên này hay không</b>?", "Xóa", 500, "Đồng ý",
+            function (thisID) {
+                //Gọi ajax đến API Xóa
+                $.ajax({
+                    type: 'DELETE',//GET - POST - PUT - DELETE
+                    url: "/Admin/User/Delete?userId=" + userId, //Đường dẫn
+                    contentType: 'application/json; charset=utf-8',//Định nghĩa
+                    data: "",//Chuyển sang JSON
+                    dataType: "json",
+                    async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                    success: function (data) {
+                        //Sau khi Xóa thành công thì thực hiện đóng Dialog
+                        $(thisID).dialog("close");
+                        //Load lại dữ liệu bảng
+                        LoadDataUser();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                        console.log(message);
+                    }
+                });
+            });
+    }
+</script>

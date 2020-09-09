@@ -1,0 +1,47 @@
+﻿@using LibraryNF.Helper
+@model IEnumerable<Discuss.Models.AnswerModel>
+@if (!Model.Any())
+{
+    <div class="col-12" style="padding-top: 10px">
+        Không có câu trả lời cho câu hỏi này.
+    </div>
+}
+else
+{
+    foreach (var answer in Model)
+    {
+        <div class="col-12" style="padding-top: 10px">
+            <div class="ask-avatar">
+                <img src="https://hoidap247.org/images/avatar/avatar1.png" alt="user-avatar" class="avatar-ask">
+                @if (answer.IsConfirm == 1)
+                {
+                    <div class="left-info-ask">
+                        <div class="tick-check">
+                            <spans><i class="fa fa-check"></i></spans>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="answer-content">
+                <div class="user-name">
+                    <a href="javascript:void(0)">@answer.FullName</a>
+                </div>
+                <div>
+                    @Html.Raw(answer.AnswerContent)
+                </div>
+            </div>
+        </div>
+        <div class="col-12" style="padding-left: 70px; padding-top: 10px;">
+            <div class="option-answer-vote" style="float: left;" id="btnVote-@answer.AnswerId">
+                @{Html.RenderAction("AnswerVote", "Answer", new { answerID = answer.AnswerId, countVote = answer.CountVote });}
+            </div>
+            <div class="option-answer-vote" style="float: left;padding-left: 10px" id="btnConfirm-@answer.AnswerId">
+                @{Html.RenderAction("ConfirmAnswer", "Answer", new { askId = answer.AskId, answerID = answer.AnswerId });}
+            </div>
+            <div class="option-answer" style="text-align: right">
+                <a style="color: #616770">@DateTimeHelper.GetTimeAgo(answer.DateCreated)</a>
+            </div>
+        </div>
+    }
+}

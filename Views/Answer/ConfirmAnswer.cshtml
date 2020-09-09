@@ -1,0 +1,9 @@
+﻿@model Discuss.Models.AnswerModel
+@if (Model.IsConfirm == 1)//Chưa Confirm
+{
+    <a class="paddingright7px cursor-pointer" id="ConfirmAnswer-@Model.AnswerId" onclick="ConfirmAnswer(@Model.AskId,@Model.AnswerId)"><i class="fa fa-check-square-o" style="color: green"></i>Xác nhận câu trả lời</a>
+}
+else if (Model.IsConfirm == 0)
+{
+    <a class="paddingright7px cursor-pointer" id="ConfirmAnswer-@Model.AnswerId" onclick="UnConfirmAnswer(@Model.AskId,@Model.AnswerId)"><i class="fa fa-ban" style="color: brown"></i>Bỏ xác nhận</a>
+}

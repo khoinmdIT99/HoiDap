@@ -1,0 +1,33 @@
+﻿@model List<Discuss.Models.CategoryModel>
+
+@*Bảng dữ liệu*@
+<table class="table table-striped table-bordered table-hover table-render-html gg-table table-chapter">
+    <thead>
+    <tr>
+        <th class="vertical-align-inherit width60px">ID</th>
+        <th class="vertical-align-inherit">Tên danh mục</th>
+        <th class="vertical-align-inherit width180px">Chức năng</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td class="center">
+                @category.CategoryId
+            </td>
+            <td class="center">
+                @category.CategoryName
+            </td>
+            <td class="center">
+                <a onclick="Update(@category.CategoryId)">
+                    <div data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Sửa thông tin" class="gg-function-icon glyphicon glyphicon-pencil"></div>
+                </a>
+                <a onclick="DeleteCategory(@category.CategoryId)">
+                    <div data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Xóa thông tin" class="gg-function-icon glyphicon glyphicon-trash"></div>
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

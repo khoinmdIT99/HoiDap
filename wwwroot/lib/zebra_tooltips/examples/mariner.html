@@ -1,0 +1,439 @@
+<!doctype html>
+
+<html>
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Zebra Tooltips is a lightweight (around 6KB minified, 1.9KB gzipped) jQuery tooltips plugin, featuring nice transitions and offering a wide range of configuration options">
+        <link rel="shortcut icon" href="favicon.ico">
+        <title>Zebra Tooltips - a lightweight and highly configurable jQuery tooltips plugin</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCoreDefault.css" />
+
+        <link rel="stylesheet" href="../dist/css/mariner/zebra_tooltips.min.css" type="text/css">
+        <link rel="stylesheet" href="examples.css" type="text/css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushXml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushCss.min.js"></script>
+
+        <script type="text/javascript">
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.all();
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Zebra Tooltips</h1>
+                <p>a lightweight and highly configurable jQuery tooltips plugin</p>
+                <hr>
+                <p>
+                    <a href="https://github.com/stefangabos/Zebra_Tooltips/archive/master.zip" class="btn btn-primary btn-lg" role="button" style="text-decoration: none">Download</a>
+                    <a href="https://github.com/stefangabos/Zebra_Tooltips" class="btn btn-primary btn-lg" role="button" style="text-decoration: none">View on GitHub</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-xs-12">
+
+                    <blockquote class="bg-warning"><small class="text-warning">See the examples with the tooltips using the <a href="index.html">default</a>, the <a href="bubble.html">bubble</a> or the <a href="milan.html">milan</a> theme.</small></blockquote>
+
+                    <p>
+                        Zebra Tooltips is a lightweight (around 6KB minified, 1.9KB gzipped) jQuery tooltips plugin for
+                        creating simple but smart and visually attractive tooltips, featuring nice transitions, 4 themes,
+                        and offering a wide range of configuration options.
+                    </p>
+
+                    <p>
+                        Besides the default behavior of tooltips showing when user hovers the element, tooltips may also
+                        be shown and hidden programmatically. When shown programmatically, the tooltips feature a "close"
+                        button and clicking it will be the only way of closing tooltips opened this way. This is useful
+                        for drawing users' attention to specific areas of a page (like error messages after validating a
+                        form).
+                    </p>
+
+                    <p>
+                        Tooltips can be aligned left, center or right, relative to the parent element, as well as above
+                        or below the parent element. The library detects the browser window's edges and will make sure
+                        that the tooltips are always in the viewport.
+                    </p>
+                        The tooltips are created using <strong>NO IMAGES</strong> and falls back gracefully for browsers
+                        that don't support  all the fancy stuff.
+                    </p>
+
+                    <p>
+                        Works in pretty much any browser - Firefox, Chrome, Safari, Edge, Opera and Internet Explorer 6+
+                    </p>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            1. <a href="#basic-usage">Basic usage</a><br>
+                            2. <a href="#tooltip-alignment">Tooltip alignment</a><br>
+                            3. <a href="#html-content">HTML content</a><br>
+                            4. <a href="#custom-width">Custom width</a><br>
+                            5. <a href="#data-attributes">Data attributes</a><br>
+                            <a name="basic-usage"></a>
+                            6. <a href="#show-programmatically">Show tooltips programmatically</a><br>
+                        </div>
+                        <div class="col-sm-6">
+                        </div>
+                    </div>
+
+
+                    <!-- =========================================================================================== -->
+
+                    <br><h3><strong>1.</strong> Basic usage</h3>
+
+                    <p>
+                        The simplest way to get going is simply attaching the tooltips to one or more elements. As far as
+                        the HTML markup goes, the <code>title</code> attribute is required as it contains the tooltip's
+                        content.
+                    </p>
+
+                    <p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips"
+                           title=&quot;Zebra Tooltips is a lightweight and highly configurable jQuery tooltips plugin&quot;>
+                        Over here!&lt;/a>
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips'));
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        <a href="javascript: void(0)" class="zebra_tooltips" title="Zebra Tooltips is a lightweight and highly configurable jQuery tooltips plugin">Over here!</a>
+                    </div>
+
+                    <a name="tooltip-alignment"></a>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <!-- =========================================================================================== -->
+
+                    <h3><strong>2.</strong> Tooltip alignment</h3>
+
+                    <p>
+                        Tooltips can be positioned horizontally on the <code>left</code> or on the <code>right</code> of
+                        an element, and <code>above</code> or <code>below</code> the element, vertically.
+                    </p>
+
+                    <p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        Tooltip on the
+
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips_left"
+                           title="The arrow of the tooltip is on the left side of the element. Try making the browser
+                                  window smaller and notice that no matter how the tooltip needs to be repositioned in
+                                  order to stay inside the viewport, its arrow will always be on the left side of the
+                                  element.">left&lt;/a>.
+
+                        Tooltip on the
+
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips_right"
+                           title="The arrow of the tooltip is on the right side of the element. Try making the browser
+                                  window smaller and notice that no matter how the tooltip needs to be repositioned in
+                                  order to stay inside the viewport, its arrow will always be on the right side of the
+                                  element.">right&lt;/a>
+
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_left'), {
+                            position:   'left'
+                        });
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_right'), {
+                            position:   'right'
+                        });
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        Tooltip on the <a href="javascript: void(0)" class="zebra_tooltips_left" title="The arrow of the tooltip is on the left side of the element. Try making the browser window smaller and notice that no matter how the tooltip needs to be repositioned in order to stay inside the viewport, its arrow will always be on the left side of the element.">left</a>.
+                        Tooltip on the <a href="javascript: void(0)" class="zebra_tooltips_right" title="The arrow of the tooltip is on the right side of the element. Try making the browser window smaller and notice that no matter how the tooltip needs to be repositioned in order to stay inside the viewport, its arrow will always be on the right side of the element.">right</a>
+                    </div>
+
+                    <p>By default, tooltips are shown <strong>above</strong> the element they are attached to. If there is not enought space above the parent element for the tooltip to fit in and still be visible, the tooltips will be shown <em>below</em> its parent element. This behaviour can be changed via the <code>vertical_alignment</code> property:</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_left_below'), {
+                            position:           'left',
+                            vertical_alignment: 'below'
+                        });
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_right_below'), {
+                            position:           'right',
+                            vertical_alignment: 'below'
+                        });
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        Tooltip on the <a href="javascript: void(0)" class="zebra_tooltips_left_below" title="I am a tooltip that tries to be positioned below the parent element. If there is not enough space below the parent element I will be positioned above it. Try scrolling the page so there is not enough space below the parent element.">left</a>.
+                        Tooltip on the <a href="javascript: void(0)" class="zebra_tooltips_right_below" title="I am a tooltip that tries to be positioned below the parent element. If there is not enough space below the parent element I will be positioned above it. Try scrolling the page so there is not enough space below the parent element.">right</a>
+                    </div>
+
+                    <a name="html-content"></a>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <!-- =========================================================================================== -->
+
+                    <h3><strong>3.</strong> HTML content</h3>
+
+                    <p>
+                        You can add any HTML as the tooltip's content. All you have to do is to replace <code>&lt;</code>
+                        with <code>&amp;lt;</code>, <code>&gt;</code> with <code>&amp;gt;</code> and <code>&quot;</code>
+                        with <code>&amp;quot;</code>
+                    </p>
+
+                    <p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips"
+                           title=&quot;&amp;lt;p&amp;gt;Lorem ipsum &amp;lt;strong&amp;gt;dolor sit&amp;lt;/strong&amp;gt;, amet consectetur &amp;lt;em&amp;gt;adipisicing
+                                  elit&amp;lt;/em&amp;gt;. Minus modi impedit ratione a nostrum harum animi, &amp;lt;del&amp;gt;voluptatibus&amp;lt;/del&amp;gt;
+                                  laborum consequatur architecto corrupti sit nulla porro culpa aspernatur saepe non quas temporibus.
+                                  &amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;And yes, of course, an image:&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+                                  &amp;lt;img src=&amp;quot;https://placeimg.com/100/100/animals&amp;quot; height=&amp;quot;100&amp;quot;&amp;gt;&amp;lt;/p&amp;gt;
+                                  &amp;lt;em&amp;gt;IT IS VERY IMPORTANT TO EXPLICITLY SPECIFY THE HEIGHT OF THE IMAGE
+                                  OR THE TOOLTIP WILL NOT BE RENDERED CORRECTLY!&amp;lt;/em&amp;gt;&quot;>
+                        Hover me!&lt;/a>
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_html_content'));
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        <a href="javascript: void(0)" class="zebra_tooltips_html_content" title="&lt;p&gt;Lorem ipsum &lt;strong&gt;dolor sit&lt;/strong&gt;, amet consectetur &lt;em&gt;adipisicing elit&lt;/em&gt;. Minus modi impedit ratione a nostrum harum animi, &lt;del&gt;voluptatibus&lt;/del&gt; laborum consequatur architecto corrupti sit nulla porro culpa aspernatur saepe non quas temporibus.&lt;/p&gt;&lt;p&gt;And yes, of course, an image:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;https://placeimg.com/100/100/animals&quot; height=&quot;100&quot;&gt;&lt;/p&gt;&lt;em&gt;IT IS VERY IMPORTANT TO EXPLICITLY SPECIFY THE HEIGHT OF THE IMAGE OR THE TOOLTIP WILL NOT BE RENDERED CORRECTLY!&lt;/em&gt;">Hover me!</a>
+                    </div>
+
+                    <a name="custom-width"></a>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <!-- =========================================================================================== -->
+
+                    <h3><strong>4.</strong> Custom width</h3>
+
+                    <p>
+                        The default width of the tooltips is set in the CSS file but it can be set to any other value when
+                        initializing the tooltips.
+                    </p>
+
+                    <p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        When the content of your tooltips is longer, you might want to have
+
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips_custom_width_more"
+                           title=&quot;When the content of your tooltips is longer, you might want to have wider
+                                  tooltips, wherease when you less content, you might want to reduce the tooltip's width&quot;>
+                        wider tooltips&lt;/a>
+
+                        , whereas when you have less content you might want to
+
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips_custom_width_less"
+                           title=&quot;I don't have much to say&quot;>reduce the tooltip's width&lt;/a>
+
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_custom_width_more'), {
+                            max_width:  470
+                        });
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_custom_width_more'), {
+                            max_width:  90
+                        });
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        When the content of your tooltips is longer, you might want to have <a href="javascript: void(0)" class="zebra_tooltips_custom_width_more" title="When the content of your tooltips is longer, you might want to have wider tooltips, whereas when you less content, you might want to reduce the tooltip's width">wider tooltips</a>, whereas when you have less content you might want to <a href="javascript: void(0)" class="zebra_tooltips_custom_width_less" title="I don't have much to say">reduce the tooltip's width</a>
+                    </div>
+
+                    <a name="data-attributes"></a>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <!-- =========================================================================================== -->
+
+                    <h3><strong>5.</strong> Data attributes</h3>
+
+                    <p>
+                        Any of the properties of a tooltip can be set via <code>data attributes</code>. All you have to
+                        do is prefix any of the properties with <code>ztt_</code>.
+                    </p>
+
+                    <p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips"
+                           title=&quot;All my settings are set through data attributes and made me have a maximum width of 500px,
+                                  .5 opacity and be aligned to the right of my parent element&quot;
+                           data-ztt_max_width=&quot;500&quot;
+                           data-ztt_opacity=&quot;.5&quot;
+                           data-ztt_position=&quot;right&quot;>
+                        Over here!&lt;/a>
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        new $.Zebra_Tooltips($('.zebra_tooltips_data_attributes'));
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well">
+                        <a href="javascript: void(0)" class="zebra_tooltips_data_attributes" title="All my settings are set through data attributes and made me have a maximum width of 500px, .5 opacity and be aligned to the right of my parent element" data-ztt_max_width="500" data-ztt_opacity=".5" data-ztt_position="right">Over here!</a>
+                    </div>
+
+                    <a name="show-programmatically"></a>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <!-- =========================================================================================== -->
+
+                    <h3><strong>6.</strong> Show tooltips programmatically</h3>
+
+                    <br><p>HTML</p>
+
+                    <pre class="brush:xml">
+                    &lt;p>
+                        &lt;a href="javascript: void(0)"
+                           class="zebra_tooltips_programmatically"
+                           title="I am tooltip which was shown programmatically instead of when hovering
+                                  the parent element. As a consequence, I have a close button. Additionally -
+                                  just this once - once I am closed I will not show anymore.">
+                        Over here!&lt;/a>
+                    &lt;/p>
+                    </pre>
+
+                    <p>JavaScript</p>
+
+                    <pre class="brush:js">
+                    $(document).ready(function() {
+
+                        var tooltip = new $.Zebra_Tooltips($('.zebra_tooltips_programmatically'));
+
+                        tooltip.show($('.zebra_tooltips_programmatically'), true); // destroy on close
+
+                    });
+                    </pre>
+
+                    <p>Result</p>
+
+                    <div class="well clearfix">
+                        <a href="javascript: void(0)" class="zebra_tooltips_programmatically pull-right" title="I am tooltip which was shown programmatically instead of when hovering the parent element. As a consequence, I have a close button. Additionally - just this once - once I am closed I will not show anymore.">Over here!</a>
+                    </div>
+
+                    <div class="top">
+                        <a href="#top" class="small">⯅ To the top</a>
+                    </div>
+
+                    <p class="text-center">copyright &copy; 2012 - 2018 <a href="https://github.com/stefangabos/">stefan gabos</a></p>
+
+                    <br>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/zebra_pin@2.0.0/dist/zebra_pin.min.js"></script>
+        <script src="../dist/zebra_tooltips.min.js"></script>
+        <script src="examples.js"></script>
+
+    </body>
+
+</html>

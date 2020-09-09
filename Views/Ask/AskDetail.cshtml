@@ -1,0 +1,246 @@
+﻿@using System.ComponentModel
+@using LibraryNF.Helper
+@model Discuss.Models.AskModel
+@{
+    ViewData["SeoPageTitle"] = Model.Content;
+    ViewData["SeoDescription"] = "";
+    ViewData["SeoKeywords"] = "";
+    ViewData["SeoImage"] = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/wwwroot/client-site/css/Index.css" rel="stylesheet" />
+<style>
+    .line {
+        border-top: 1px solid #dddfe2;
+    }
+</style>
+<section class="main-highlight"></section>
+<section class="main-content">
+    <div class="main-content-wrapper">
+        <div class="content-body">
+            <div class="content-timeline">
+                <div class="ask-lists col-12">
+                    <div class="ask-body row">
+                        <div class="col-12">
+                            <div class="ask-avatar">
+                                <img src="https://hoidap247.org/images/avatar/avatar1.png" alt="user-avatar" class="avatar-ask">
+                            </div>
+                            <div>
+                                <div class="user-name">
+                                    <a href="javascript:void(0)">@TextHelper.CreateNickNameRandom()</a>
+                                </div>
+                                <div class="time">
+                                    @DateTimeHelper.GetTimeAgo(Model.DateCreated)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="left-info-ask">
+                                <div class="tick-check">
+                                    <spans><i class="fa fa-check"></i></spans>
+                                </div>
+                            </div>
+                            <div style="margin-left: 55px;">
+                                <div class="ask-content">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                                <div class="ask-tag">
+                                    <a href="javascript:void(0)" class="timeline-category-name">Hỏi đáp</a>
+                                    <a href="javascript:void(0)" class="timeline-category-name">@Model.CategoryName</a>
+                                </div>
+                                <div class="ask-action-info">
+                                    <span>
+                                        <i class="emotion-like">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span id="lab-count-like-@Model.AskId">@Model.CountLike lượt thích</span>
+                                    </span>
+                                    <span style="padding-left: 10px;">
+                                        <i class="fa fa-eye"></i><span>@Model.CountView lượt xem</span>
+                                    </span>
+                                    <span class="float-right">
+                                        <i class="emotion-comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> <span>@Model.CountAnswer  trả lời</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 div-reply">
+                            <div class="col-md-4 col-xs-4 btn-like" style="height: 36px" id="btnLike">
+                                @{Html.RenderAction("LikeAsk", "Ask", new { countLike = Model.CountLike, askId = Model.AskId });}
+                            </div>
+                            <div class="col-lg-4 col-xs-4 btn-reply" style="height: 36px">
+                                <a onclick="AnswerAsk(@Model.AskId)" style="vertical-align: -webkit-baseline-middle;"><i class="fa fa-comment-o"></i> Trả lời</a>
+                            </div>
+                            <div class="col-lg-4 col-xs-4 btn-share" style="height: 36px">
+                                @if (Model.IsBoss)
+                                {
+                                    <a href="/sua-cau-hoi/@Model.AskId" style="vertical-align: -webkit-baseline-middle;text-decoration: none;"><i class="fa fa fa-wrench"></i>Sửa câu hỏi</a>
+
+                                }
+                                else
+                                {
+                                    <a href="#" style="vertical-align: -webkit-baseline-middle;text-decoration: none;"><i class="fa fa-share-square-o fa-share"></i>Chia sẻ</a>
+                                }
+                            </div>
+                        </div>
+                        @*Trả lời*@
+                        <div class="col-12 line" id="divAnswer-@Model.AskId">
+                            @{Html.RenderAction("Index", "Answer", new { askId = Model.AskId });}
+                        </div>
+                        @*Người dùng trả lời câu hỏi*@
+                        <div class="col-12 display-none" id="DivAnswerToAsk-@Model.AskId" style="margin-top: 10px">
+                            <div class="ask-avatar col-12">
+                                <img src="https://hoidap247.org/images/avatar/avatar1.png" alt="user-avatar" class="avatar-ask">
+                            </div>
+                            <div class="col-12">
+                                <div style="margin-left: 55px;">
+                                    <div>
+                                        <textarea class="form-control" id="txtContentAnwserToAsk-@Model.AskId"></textarea>
+                                    </div>
+                                    <div class="row btn-cmt">
+                                        <input class="btn btn-default btnCancel" style="margin-right: 10px;" onclick="CancelAnswer(@Model.AskId)" value="Hủy" type="button">
+                                        <input class="btn btn-primary btnPost" onclick="SendAnswer(@Model.AskId, 0)" value="Gửi" type="button">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-sidebar">
+            <div class="sidebar_inner">
+                <div class="widget-item">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    //Nút thích câu hỏi
+    function LikeAsk(thisID, askId, countLike) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        if (countLike === 0)
+            $("#lab-count-like-" + askId).text("Bạn thích câu hỏi này");
+        else
+            $("#lab-count-like-" + askId).text("Bạn và " + countLike + " người thích");
+
+        AjaxGetAsync("/Ask/Like?askId=" + askId, undefined,
+            function (data) {
+                AjaxLoadPartial("/Ask/LikeAsk?countLike="+data+"&askId="+askId, undefined,
+                    function (html) {
+                        $("#btnLike").html(html);
+                    });
+            });
+    }
+    //Nút bỏ thích câu hỏi
+    function DisLikeAsk(thisID, askId, countLike) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        if (countLike-1 === 0)
+            $("#lab-count-like-" + askId).text("0 lượt thích");
+        else
+            $("#lab-count-like-" + askId).text(countLike-1 + " người thích");
+
+        AjaxGetAsync("/Ask/DisLike?askId=" + askId, undefined,
+            function (data) {
+                AjaxLoadPartial("/Ask/LikeAsk?countLike="+data+"&askId="+askId, undefined,
+                    function (html) {
+                        $("#btnLike").html(html);
+                    });
+            });
+    }
+    //Nút Xác nhận câu trả lời
+    function ConfirmAnswer(askId,answerId) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        AjaxGetAsync("/Answer/Confirm?askId=" + askId+"&answerId="+answerId, undefined,
+            function (data) {
+                location.reload();
+            });
+    }
+    //Nút Bỏ Xác nhận câu trả lời
+    function UnConfirmAnswer(askId,answerId) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        AjaxGetAsync("/Answer/UnConfirm?askId=" + askId+"&answerId="+answerId, undefined,
+            function (data) {
+                location.reload();
+            });
+    }
+    //Nút trả lời câu hỏi
+    function AnswerAsk(askId) {
+        $("#DivAnswerToAsk-" + askId).removeClass("display-none");
+        $("#DivAnswerToAsk-" + askId)[0].scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+        $("#txtContentAnwserToAsk-" + askId).summernote({
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol']],
+                ['view', ['fullscreen', 'codeview']]
+            ],
+            height: 100,
+            tabsize: 2
+        });
+    }
+    //Nút Hủy câu trả lời
+    function CancelAnswer(askId) {
+        $("#DivAnswerToAsk-" + askId).addClass("display-none");
+    }
+    //Gửi câu trả lời
+    function SendAnswer(askId) {
+        var objAjax = {
+            parameters: {
+                AskId: askId,
+                AnswerContent: $("#txtContentAnwserToAsk-"+askId).summernote('code')
+            },
+            divLoading:"#DivAnswerToAsk-" + askId
+        };
+        AjaxPostAsync("/Answer/Add", objAjax,
+            function (data) {
+                location.reload();
+            });
+    }
+    function VoteAnswer(thisID, answerId, countVote) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        $("#CountVote-" + answerId).text(countVote + 1);
+
+        AjaxGetAsync("/Answer/Vote?answerId=" + answerId, undefined,
+            function (data) {
+                AjaxLoadPartial("/Answer/AnswerVote?countVote="+data+"&answerId="+answerId, undefined,
+                    function (html) {
+                        $("#btnVote-"+ answerId).html(html);
+                    });
+            });
+    }
+    function UnVoteAnswer(thisID, answerId, countVote) {
+        if ('@Model.IsLogin' === 'False') {
+            SwalNotifyError("Bạn chưa đăng nhập hệ thống.");
+            return;
+        }
+        $("#CountVote-" + answerId).text(countVote - 1);
+
+        AjaxGetAsync("/Answer/UnVote?answerId=" + answerId, undefined,
+            function (data) {
+                AjaxLoadPartial("/Answer/AnswerVote?countVote="+data+"&answerId="+answerId, undefined,
+                    function (html) {
+                        $("#btnVote-"+ answerId).html(html);
+                    });
+            });
+    }
+</script>

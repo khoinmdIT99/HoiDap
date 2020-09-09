@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutAdmin.cshtml";
+}
+@*Code mẫu*@
+@*Code HTML (Bộ lọc - Bảng dữ liệu - Phân trang - Nút thêm mới)*@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box form-horizontal">
+            @*Bộ Lọc và nút thêm mới*@
+            <div class="box-header">
+                <label class="control-label col-sm-1" for="CategoryName">Tên danh mục:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="CategoryName" onchange="LoadDataCategory()" />
+                </div>
+                <div>
+                    <button data-content="Bấm vào đây để Thêm mới" data-placement="left" data-toggle="popover" data-trigger="hover" type="button" class="btn btn-primary float-right" onclick="Insert()">Thêm mới</button>
+                </div>
+            </div>
+            @*Bảng dữ liệu - Phân trang*@
+            <div class="box-body">
+                <div id="table-content">
+                    @*Chứa HTML dạng bảng*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Teamplace HTML Thêm mới/Sửa*@
+<div id="InsertOrUpdate" class="form-horizontal display-none">
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="txtCategoryNameIOU">Tên danh mục <b style="color: #ff0000;">*</b>:</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" placeholder="Mời bạn nhập tên danh mục" id="txtCategoryNameIOU" />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        //Hàm ở đây được chạy đầu tiên khi load trang
+        LoadDataCategory();
+    });
+    function LoadDataCategory(pageSize) {//Số bản ghi của 1 trang
+        if (pageSize == undefined) pageSize = 10;//Nếu không chọn thì mặc định
+        window.objAjax.divLoading = "all";//loadding
+        var url = CreateURL("/Admin/Category/GetPagination", //{Controller}/{Action}
+            {
+                pageSize: pageSize,
+                categoryName: $("#CategoryName").val() //Tham số bộ lọc
+            });
+        AjaxLoadPartial(url, window.objAjax,
+            function (html) {//html chính là bảng dữ liệu và phân trang
+                //Dữ liệu trả về OK
+                $("#table-content").html(html);
+                LoadSkill();
+            });
+    }
+    //Chức năng Thêm mới danh mục
+    function Insert() {
+        //Hiển thị #InsertOrUpdate trên 1 popup
+        ShowDialogInsertOrUpdate("InsertOrUpdate",
+            function (thisID) {
+                //Chỗ viết code xử lý khi bấm nút cập nhật
+                $.ajax({
+                    type: 'POST',//GET - POST - PUT - DELETE
+                    url: "/Admin/Category/Insert", //Đường dẫn
+                    contentType: 'application/json; charset=utf-8',//Định nghĩa
+                    data: JSON.stringify({
+                        CategoryName: $("#txtCategoryNameIOU").val()
+                    }),//Chuyển sang JSON
+                    dataType: "json",
+                    async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                    success: function (data) {
+                        //Sau khi Insert thành công thì thực hiện đóng Dialog
+                        $(thisID).dialog("close");
+                        //Load lại dữ liệu bảng
+                        LoadDataCategory();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                        console.log(message);
+                    }
+                });
+            }, 800);
+        //Xóa dữ liệu có sẵn từ txtCategoryNameIOU
+        $("#txtCategoryNameIOU").val("");
+    }
+
+    function Update(categoryId) {
+        //Bước 0: Gán Id cho nút (View: GetTable)
+        //Bước 1: Lấy dữ liệu từ CSDL theo categoryId gán cho form InsertOrUpdate
+        $.ajax({
+            type: 'GET',//GET - POST - PUT - DELETE
+            url: "/Admin/Category/GetById?categoryId=" + categoryId, //Đường dẫn
+            contentType: 'application/json; charset=utf-8',//Định nghĩa
+            data: "",//Chuyển sang JSON
+            dataType: "json",
+            async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+            success: function (data) {
+                //Gán dữ liệu cho form
+                $("#txtCategoryNameIOU").val(data.CategoryName);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                console.log(message);
+            }
+        });
+        //Bước 2: Hiển thị form InsertOrUpdate trên dialog
+        ShowDialogInsertOrUpdate("InsertOrUpdate",
+            function (thisID) {
+                //Chỗ viết code xử lý khi bấm nút cập nhật
+                $.ajax({
+                    type: 'PUT',//GET - POST - PUT - DELETE
+                    url: "/Admin/Category/Update", //Đường dẫn
+                    contentType: 'application/json; charset=utf-8',//Định nghĩa
+                    data: JSON.stringify({
+                        CategoryId: categoryId,
+                        CategoryName: $("#txtCategoryNameIOU").val()
+                    }),//Chuyển sang JSON
+                    dataType: "json",
+                    async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                    success: function (data) {
+                        //Sau khi Cập nhật thành công thì thực hiện đóng Dialog
+                        $(thisID).dialog("close");
+                        //Load lại dữ liệu bảng
+                        LoadDataCategory();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                        console.log(message);
+                    }
+                });
+            }, 800);
+    }
+
+    function DeleteCategory(categoryId) {
+        //Bước 0: Gán Id cho nút (View: GetTable)
+        //Bước 1: Thông báo có muốn xóa hay không?
+        CoreConfirm("Đồng chí có chắc chắn muốn xóa <b>danh mục này hay không</b>?", "Xóa", 500, "Đồng ý",
+            function (thisID) {
+                //Gọi ajax đến API Xóa
+                $.ajax({
+                    type: 'DELETE',//GET - POST - PUT - DELETE
+                    url: "/Admin/Category/Delete?categoryId=" + categoryId, //Đường dẫn
+                    contentType: 'application/json; charset=utf-8',//Định nghĩa
+                    data: "",//Chuyển sang JSON
+                    dataType: "json",
+                    async: false,//async = true - đồng bộ, async = false - bất đồng bộ, Xem thêm tại: https://viblo.asia/p/ky-thuat-dong-bo-bat-dong-bo-trong-ajax-MgNeWXxEkYx
+                    success: function (data) {
+                        //Sau khi Xóa thành công thì thực hiện đóng Dialog
+                        $(thisID).dialog("close");
+                        //Load lại dữ liệu bảng
+                        LoadDataCategory();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        var message = xhr.responseText != undefined ? xhr.responseText : textStatus;
+                        console.log(message);
+                    }
+                });
+            });
+    }
+</script>
